@@ -75,12 +75,23 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
       }
     }
     print('Safely Remove Image : $imageName');
-    // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
-    // print(a);
-    docker2.dockerRun('rmi',
-        '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
-        terminal: true);
+    removeImage(imageName);
   }
+}
+
+void removeImage(String imageName) {
+  // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
+  // print(a);
+  docker2.dockerRun('rmi',
+      '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
+      terminal: true);
+}
+
+void removePushedImages() {
+  pushedImages.forEach((pushedImage) {
+    removeImage(pushedImage);
+    // pushedImages.remove(pushedImage);
+  });
 }
 
 Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
@@ -88,6 +99,33 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   if (builtImages.contains(imageName)) {
     print('Image $imageName is already built. So, skipping now...');
   } else {
+    //check disk space
+    ProcessResult dfResult = await Process.run('df', ['-h', '--total']);
+    String dfResultFileName = 'dfResult.txt';
+    File(dfResultFileName).writeAsStringSync(dfResult.stdout.toString());
+    ProcessResult grepResult =
+        await Process.run('grep', ['total', dfResultFileName]);
+    String processedGrepResultString =
+        grepResult.stdout.toString().substring(16);
+    int percentageSymbolIndex = processedGrepResultString.indexOf('%');
+    int diskUsagePercentage = int.parse(processedGrepResultString.substring(
+        percentageSymbolIndex - 2, percentageSymbolIndex));
+    if (diskUsagePercentage >=
+        int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE'])) {
+      //Stop Containers
+      // List<String> containerIds = docker2.dockerRun('ps', '-a -q');
+      // print(containerIds);
+      // containerIds.forEach((containerId) {
+      //   docker2.dockerRun('rm', containerId, terminal: true);
+      // });
+      if (pushedImages.isNotEmpty) {
+        removePushedImages();
+        repositoryCloneBuildPushAndRemoveImage(imageName);
+      } else {
+        print('Error : out of storage...');
+        exit(0);
+      }
+    }
     String dockerBuildArgs =
         '--file .gitpod.Dockerfile --tag $imageName:latest';
     print('Building https://github.com/$imageName.git');
