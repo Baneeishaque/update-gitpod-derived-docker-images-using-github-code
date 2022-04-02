@@ -72,6 +72,11 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
       }
     }
     print('Safely Remove Image : $imageName');
+    // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
+    // print(a);
+    docker2.dockerRun(
+        'rmi', (docker2.dockerRun('images', '\'$imageName\' -a -q'))[0],
+        terminal: true);
   }
 }
 
