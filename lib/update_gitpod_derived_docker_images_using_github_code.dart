@@ -90,10 +90,16 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   //     remote: 'https://github.com/docker/getting-started.git',
   //     dockerfile: 'Dockerfile',
   //     t: 'docker/getting-started');
-  docker2.dockerRun('build',
-      '--file .gitpod.Dockerfile --tag $imageName:latest https://github.com/$imageName.git',
-      terminal: true);
-  docker2.dockerRun('push', '$imageName:latest', terminal: true);
+  String dockerBuildArgs = '--file .gitpod.Dockerfile --tag $imageName:latest';
+  print('Building https://github.com/$imageName.git');
+  print('Docker raw command for local repo. : docker build $dockerBuildArgs .');
+  dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
+  print('Docker raw command : docker build $dockerBuildArgs');
+  docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+  String dockerPushArgs = '$imageName:latest';
+  print('Pushing $dockerPushArgs');
+  docker2.dockerRun('push', '$dockerPushArgs', terminal: true);
+  print('Docker raw command : docker push $dockerPushArgs');
 }
 
 Future<void> searchForGitpodDerivedImages(String baseImageName) async {
