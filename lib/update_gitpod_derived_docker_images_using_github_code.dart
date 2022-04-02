@@ -90,11 +90,12 @@ void removeImage(String imageName) {
 void removePushedImages() {
   pushedImages.forEach((pushedImage) {
     removeImage(pushedImage);
-    // pushedImages.remove(pushedImage);
+    pushedImages.remove(pushedImage);
   });
 }
 
-Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
+Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
+    {bool afterCleanUp = false}) async {
   //built images
   if (builtImages.contains(imageName)) {
     print('Image $imageName is already built. So, skipping now...');
@@ -120,7 +121,7 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
       // });
       if (pushedImages.isNotEmpty) {
         removePushedImages();
-        repositoryCloneBuildPushAndRemoveImage(imageName);
+        repositoryCloneBuildPushAndRemoveImage(imageName, afterCleanUp: true);
       } else {
         print('Error : out of storage...');
         exit(0);
@@ -136,7 +137,10 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
     docker2.dockerRun('build', dockerBuildArgs, terminal: true);
     builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
   }
-  // //pushed images
+  //pushed images
+  if (afterCleanUp) {
+    pushedImages = pushedImagesFile.readAsLinesSync();
+  }
   if (pushedImages.contains(imageName)) {
     print('Image $imageName is already pushed. So, skipping now...');
   } else {
