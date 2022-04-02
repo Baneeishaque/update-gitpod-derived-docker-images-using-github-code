@@ -26,7 +26,9 @@ workflows:
       - name: update-gitpod-derived-docker-images-using-github-code Sample
         script: |
           pwd
-          la
+          ls -a
+          which docker
+          docker version
           dart run bin/update-gitpod-derived-docker-images-using-github-code 'baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome'
     publishing:
       email:
