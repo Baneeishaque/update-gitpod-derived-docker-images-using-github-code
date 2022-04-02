@@ -91,8 +91,9 @@ void removeImage(String imageName) {
 void removePushedImages() {
   pushedImages.reversed.forEach((pushedImage) {
     removeImage(pushedImage);
-    pushedImages.remove(pushedImage);
+    // pushedImages.remove(pushedImage);
   });
+  pushedImages = List.empty(growable: true);
 }
 
 Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
