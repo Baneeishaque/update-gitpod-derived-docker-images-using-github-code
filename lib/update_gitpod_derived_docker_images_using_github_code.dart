@@ -90,9 +90,10 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   //     remote: 'https://github.com/docker/getting-started.git',
   //     dockerfile: 'Dockerfile',
   //     t: 'docker/getting-started');
-  docker2.dockerRun(
-      'build', '--file .gitpod.Dockerfile --tag $imageName:latest https://github.com/$imageName.git',
+  docker2.dockerRun('build',
+      '--file .gitpod.Dockerfile --tag $imageName:latest https://github.com/$imageName.git',
       terminal: true);
+  docker2.dockerRun('push', '$imageName:latest', terminal: true);
 }
 
 Future<void> searchForGitpodDerivedImages(String baseImageName) async {
