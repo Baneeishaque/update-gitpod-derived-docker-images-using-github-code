@@ -1,0 +1,32 @@
+workflows:
+  update-gitpod-derived-docker-images-using-github-code:
+    name: update-gitpod-derived-docker-images-using-github-code
+    instance_type: mac_mini
+    max_build_duration: 120
+    triggering:
+      events:
+        - push
+        - pull_request
+        - tag
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: '*'
+          include: true
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+    scripts: 
+      - name: Install Dart on macOS
+        script: |
+          brew tap dart-lang/dart
+          brew install dart
+      - name: update-gitpod-derived-docker-images-using-github-code Sample
+        script: dart run update-gitpod-derived-docker-images-using-github-code 'baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome'
+    publishing:
+      email:
+        recipients:
+          - baneeishaque@gmail.com
+          - baneeishaque@hotmail.com
