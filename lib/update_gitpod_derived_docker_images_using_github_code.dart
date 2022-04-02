@@ -10,6 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:update_gitpod_derived_docker_images_using_github_code/GithubApiSearchCodeRequestResponse.dart';
 
 int apiRequestCount = 1;
+bool isLoggedIn = false;
 
 Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
     String searchQuery) async {
@@ -101,6 +102,25 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
   print('Docker raw command : docker build $dockerBuildArgs');
   docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+  if(isLoggedIn){
+    pushImage(imageName);
+  }else{
+    var loginResult=docker2.dockerRun('login','--username ${Platform.environment['DOCKER_HUB_USERNAME']} --password ${Platform.environment['DOCKER_HUB_PASSWORD']}');
+    // print(loginResult);
+    // print(loginResult.last);
+    if(loginResult.last=='Login Succeeded'){
+      isLoggedIn=true;
+      // exit(0);
+      pushImage(imageName);
+    }
+    else{
+      print('login Error : $loginResult');
+      exit(0);
+    }
+  }
+}
+
+void pushImage(String imageName){
   String dockerPushArgs = '$imageName:latest';
   print('Pushing $dockerPushArgs');
   docker2.dockerRun('push', '$dockerPushArgs', terminal: true);
