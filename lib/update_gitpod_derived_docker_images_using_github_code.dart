@@ -80,15 +80,16 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
 }
 
 void removeImage(String imageName) {
-  // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
-  // print(a);
-  docker2.dockerRun('rmi',
-      '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
-      terminal: true);
+  List<String> imageIdList =
+      docker2.dockerRun('images', '\'$imageName\' -a -q');
+  // print(imageIdList);
+  if (imageIdList.isNotEmpty) {
+    docker2.dockerRun('rmi', '--force ${imageIdList[0]}', terminal: true);
+  }
 }
 
 void removePushedImages() {
-  pushedImages.forEach((pushedImage) {
+  pushedImages.reversed.forEach((pushedImage) {
     removeImage(pushedImage);
     pushedImages.remove(pushedImage);
   });
@@ -111,8 +112,11 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
     int percentageSymbolIndex = processedGrepResultString.indexOf('%');
     int diskUsagePercentage = int.parse(processedGrepResultString.substring(
         percentageSymbolIndex - 2, percentageSymbolIndex));
-    if (diskUsagePercentage >=
-        int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE'])) {
+    int allowedMaximumDiskUsage =
+        int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE']);
+    print(
+        'disk Usage % : $diskUsagePercentage, allowed Disk Usage % : $allowedMaximumDiskUsage');
+    if (diskUsagePercentage >= allowedMaximumDiskUsage) {
       //Stop Containers
       // List<String> containerIds = docker2.dockerRun('ps', '-a -q');
       // print(containerIds);
