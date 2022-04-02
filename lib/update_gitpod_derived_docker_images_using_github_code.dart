@@ -84,7 +84,11 @@ void removeImage(String imageName) {
       docker2.dockerRun('images', '\'$imageName\' -a -q');
   // print(imageIdList);
   if (imageIdList.isNotEmpty) {
-    docker2.dockerRun('rmi', '--force ${imageIdList[0]}', terminal: true);
+    try {
+      docker2.dockerRun('rmi', '--force ${imageIdList[0]}', terminal: true);
+    } catch (exception) {
+      print('Error : ${exception.toString()}');
+    }
   }
 }
 
@@ -146,6 +150,7 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
   if (afterCleanUp) {
     pushedImages = pushedImagesFile.readAsLinesSync();
   }
+  print('Pushed Images : $pushedImages');
   if (pushedImages.contains(imageName)) {
     print('Image $imageName is already pushed. So, skipping now...');
   } else {
@@ -174,6 +179,7 @@ void pushImage(String imageName) {
   docker2.dockerRun('push', '$dockerPushArgs', terminal: true);
   print('Docker raw command : docker push $dockerPushArgs');
   pushedImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+  print('Pushed Images : $pushedImages');
 }
 
 Future<void> searchForGitpodDerivedImages(String baseImageName) async {
