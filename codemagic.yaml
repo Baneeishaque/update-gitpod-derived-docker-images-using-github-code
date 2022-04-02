@@ -25,7 +25,7 @@ workflows:
           brew install dart
       - name: update-gitpod-derived-docker-images-using-github-code Sample
         script: |
-          dart run bin/update_gitpod_derived_docker_images_using_github_code.dart 'baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome'
+          dart run update_gitpod_derived_docker_images_using_github_code 'baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome'
     publishing:
       email:
         recipients:
