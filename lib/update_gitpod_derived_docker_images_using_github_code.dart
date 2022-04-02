@@ -90,8 +90,8 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   //     remote: 'https://github.com/docker/getting-started.git',
   //     dockerfile: 'Dockerfile',
   //     t: 'docker/getting-started');
-  docker2.dockerRun('build',
-      '--tag docker/getting-started:latest https://github.com/docker/getting-started.git',
+  docker2.dockerRun(
+      'build', '--file .gitpod.Dockerfile --tag $imageName:latest https://github.com/$imageName.git',
       terminal: true);
 }
 
