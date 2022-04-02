@@ -5,12 +5,14 @@ import 'package:docker2/docker2.dart' as docker2;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
 
-// import 'package:git_clone/git_clone.dart' as git_clone;
-// import 'package:docker_client/api.dart';
 import 'package:update_gitpod_derived_docker_images_using_github_code/GithubApiSearchCodeRequestResponse.dart';
 
 int apiRequestCount = 1;
 bool isLoggedIn = false;
+List<String> builtImages = List.empty(growable: true);
+List<String> pushedImages = List.empty(growable: true);
+File builtImagesFile = File('builtImages.txt');
+var pushedImagesFile = File('pushedImages.txt');
 
 Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
     String searchQuery) async {
@@ -75,60 +77,64 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
     print('Safely Remove Image : $imageName');
     // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
     // print(a);
-    docker2.dockerRun(
-        'rmi', '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
+    docker2.dockerRun('rmi',
+        '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
         terminal: true);
   }
 }
 
 Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
-  // await git_clone.fastClone(
-  //     platform: git_clone.Platform.github,
-  //     ownerAndRepo: 'docker/getting-started',
-  //     callback: (ProcessResult processResult) async {
-  //       if (processResult.exitCode == 0) {
-  //         print(processResult.stdout);
-  //       } else {
-  //         print("Error : ${processResult.stderr}");
-  //       }
-  //     });
-  // await ImageApi().imageBuild(
-  //     remote: 'https://github.com/docker/getting-started.git',
-  //     dockerfile: 'Dockerfile',
-  //     t: 'docker/getting-started');
   //built images
-  String dockerBuildArgs = '--file .gitpod.Dockerfile --tag $imageName:latest';
-  print('Building https://github.com/$imageName.git');
-  print('Docker raw command for local repo. : docker build $dockerBuildArgs .');
-  dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
-  print('Docker raw command : docker build $dockerBuildArgs');
-  docker2.dockerRun('build', dockerBuildArgs, terminal: true);
-  //pushed images
-  if(isLoggedIn){
-    pushImage(imageName);
-  }else{
-    var loginResult=docker2.dockerRun('login','--username ${Platform.environment['DOCKER_HUB_USERNAME']} --password ${Platform.environment['DOCKER_HUB_PASSWORD']}');
-    // print(loginResult);
-    // print(loginResult.last);
-    if(loginResult.last=='Login Succeeded'){
-      isLoggedIn=true;
-      // exit(0);
+  if (builtImages.contains(imageName)) {
+    print('Image $imageName is already built. So, skipping now...');
+  } else {
+    String dockerBuildArgs =
+        '--file .gitpod.Dockerfile --tag $imageName:latest';
+    print('Building https://github.com/$imageName.git');
+    print(
+        'Docker raw command for local repo. : docker build $dockerBuildArgs .');
+    dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
+    print('Docker raw command : docker build $dockerBuildArgs');
+    docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+    builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+  }
+  // //pushed images
+  if (pushedImages.contains(imageName)) {
+    print('Image $imageName is already pushed. So, skipping now...');
+  } else {
+    if (isLoggedIn) {
       pushImage(imageName);
-    }
-    else{
-      print('login Error : $loginResult');
-      exit(0);
+    } else {
+      var loginResult = docker2.dockerRun('login',
+          '--username ${Platform.environment['DOCKER_HUB_USERNAME']} --password ${Platform.environment['DOCKER_HUB_PASSWORD']}');
+      // print(loginResult);
+      // print(loginResult.last);
+      if (loginResult.last == 'Login Succeeded') {
+        isLoggedIn = true;
+        // exit(0);
+        pushImage(imageName);
+      } else {
+        print('login Error : $loginResult');
+        exit(0);
+      }
     }
   }
 }
 
-void pushImage(String imageName){
+void pushImage(String imageName) {
   String dockerPushArgs = '$imageName:latest';
   print('Pushing $dockerPushArgs');
   docker2.dockerRun('push', '$dockerPushArgs', terminal: true);
   print('Docker raw command : docker push $dockerPushArgs');
+  pushedImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
 }
 
 Future<void> searchForGitpodDerivedImages(String baseImageName) async {
+  if (builtImagesFile.existsSync()) {
+    builtImages = builtImagesFile.readAsLinesSync();
+  }
+  if (pushedImagesFile.existsSync()) {
+    pushedImages = pushedImagesFile.readAsLinesSync();
+  }
   await searchForGitpodDerivedImagesSkeleton(baseImageName, 'baneeishaque');
 }
