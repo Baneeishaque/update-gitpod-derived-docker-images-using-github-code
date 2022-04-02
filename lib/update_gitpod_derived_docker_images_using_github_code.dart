@@ -76,7 +76,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
     // var a = docker2.dockerRun('images', '\'$imageName\' -a -q');
     // print(a);
     docker2.dockerRun(
-        'rmi', (docker2.dockerRun('images', '\'$imageName\' -a -q'))[0],
+        'rmi', '--force ${(docker2.dockerRun('images', '\'$imageName\' -a -q'))[0]}',
         terminal: true);
   }
 }
@@ -96,12 +96,14 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName) async {
   //     remote: 'https://github.com/docker/getting-started.git',
   //     dockerfile: 'Dockerfile',
   //     t: 'docker/getting-started');
+  //built images
   String dockerBuildArgs = '--file .gitpod.Dockerfile --tag $imageName:latest';
   print('Building https://github.com/$imageName.git');
   print('Docker raw command for local repo. : docker build $dockerBuildArgs .');
   dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
   print('Docker raw command : docker build $dockerBuildArgs');
   docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+  //pushed images
   if(isLoggedIn){
     pushImage(imageName);
   }else{
