@@ -58,6 +58,18 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
   if (gitHubApiSearchCodeRequestResponse.incompleteResults) {
     print('Incomplete results...');
   } else {
+    print('$imageName derived images');
+    print('----------------------------');
+    for (var i = 0; i < gitHubApiSearchCodeRequestResponse.totalCount; ++i) {
+      Items item = gitHubApiSearchCodeRequestResponse.items[i];
+      Repository repository = item.repository;
+      String derivedImage =
+          '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
+      if ((derivedImage.contains('gitpod')) ||
+          (derivedImage.contains('gp'))) {
+        print(derivedImage);
+      } 
+    }
     for (var i = 0; i < gitHubApiSearchCodeRequestResponse.totalCount; ++i) {
       Items item = gitHubApiSearchCodeRequestResponse.items[i];
       Repository repository = item.repository;
@@ -69,6 +81,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
             '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
         if ((derivedImage.contains('gitpod')) ||
             (derivedImage.contains('gp'))) {
+          print('Processing Derived Image : $derivedImage of Image : $imageName');
           await searchForGitpodDerivedImagesSkeleton(
               derivedImage, gitHubUsername);
         }
