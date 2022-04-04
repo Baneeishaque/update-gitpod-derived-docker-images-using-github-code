@@ -177,6 +177,7 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
       docker2.dockerRun('build', dockerBuildArgs, terminal: true);
       if (!builtImages.contains(imageName)) {
         builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+        builtImages.add(imageName);
       }
     }
   }
@@ -214,6 +215,7 @@ void pushImage(String imageName) {
   print('Docker raw command : docker push $dockerPushArgs');
   if (!pushedImages.contains(imageName)) {
     pushedImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+    pushedImages.add(imageName);
   }
   print('Pushed Images : $pushedImages');
 }
