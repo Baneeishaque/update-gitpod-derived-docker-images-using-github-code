@@ -47,7 +47,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
     sleep(Duration(minutes: 1));
   }
 
-  print('$apiRequestCount : $imageName - Clone, Build, Push & Remove Image');
+  print('$apiRequestCount : $imageName - Build, Push & Safely Remove Image');
   await repositoryCloneBuildPushAndRemoveImage(imageName);
 
   GitHubApiSearchCodeRequestResponse gitHubApiSearchCodeRequestResponse =
@@ -58,6 +58,18 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
   if (gitHubApiSearchCodeRequestResponse.incompleteResults) {
     print('Incomplete results...');
   } else {
+    print('$imageName derived images');
+    print('----------------------------');
+    for (var i = 0; i < gitHubApiSearchCodeRequestResponse.totalCount; ++i) {
+      Items item = gitHubApiSearchCodeRequestResponse.items[i];
+      Repository repository = item.repository;
+      String derivedImage =
+          '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
+      if ((derivedImage.contains('gitpod')) ||
+          (derivedImage.contains('gp'))) {
+        print(derivedImage);
+      } 
+    }
     for (var i = 0; i < gitHubApiSearchCodeRequestResponse.totalCount; ++i) {
       Items item = gitHubApiSearchCodeRequestResponse.items[i];
       Repository repository = item.repository;
@@ -69,6 +81,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
             '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
         if ((derivedImage.contains('gitpod')) ||
             (derivedImage.contains('gp'))) {
+          print('Processing Derived Image : $derivedImage of Image : $imageName');
           await searchForGitpodDerivedImagesSkeleton(
               derivedImage, gitHubUsername);
         }
@@ -80,6 +93,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
 }
 
 void removeImage(String imageName) {
+  print('Removing image $imageName...');
   List<String> imageIdList =
       docker2.dockerRun('images', '\'$imageName\' -a -q');
   // print(imageIdList);
@@ -92,12 +106,37 @@ void removeImage(String imageName) {
   }
 }
 
+void removeImageUsingImageId(String imageId) {
+  print('Removing image $imageId...');
+  try {
+    docker2.dockerRun('rmi', '--force $imageId', terminal: true);
+  } catch (exception) {
+    print('Error : ${exception.toString()}');
+  }
+}
+
 void removePushedImages() {
+  print('Removing Pushed Images...');
+  print('Pushed Images : $pushedImages');
   pushedImages.reversed.forEach((pushedImage) {
     removeImage(pushedImage);
-    // pushedImages.remove(pushedImage);
   });
   pushedImages = List.empty(growable: true);
+}
+
+bool deleteAllImages(){
+  print('Removing all images...');
+  List<String> imagesIdList =
+      docker2.dockerRun('images', '-a -q');
+  print('All Images : $imagesIdList');
+  if (imagesIdList.isNotEmpty) {
+    imagesIdList.forEach((imageId){
+      removeImageUsingImageId(imageId);
+    });
+    return true;
+  }else{
+    return false;
+  }
 }
 
 Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
@@ -132,27 +171,34 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
         removePushedImages();
         repositoryCloneBuildPushAndRemoveImage(imageName, afterCleanUp: true);
       } else {
-        print('Error : out of storage...');
-        exit(0);
+        //delete all images
+        if(deleteAllImages()){
+          repositoryCloneBuildPushAndRemoveImage(imageName, afterCleanUp: true);
+        }else{
+          print('Error : out of storage...');
+          exit(0);
+        }
       }
-    }
-    String dockerBuildArgs =
-        '--file .gitpod.Dockerfile --tag $imageName:latest';
-    print('Building https://github.com/$imageName.git');
-    print(
-        'Docker raw command for local repo. : docker build $dockerBuildArgs .');
-    dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
-    print('Docker raw command : docker build $dockerBuildArgs');
-    docker2.dockerRun('build', dockerBuildArgs, terminal: true);
-    if (!builtImages.contains(imageName)) {
-      builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+    }else{
+      String dockerBuildArgs =
+          '--file .gitpod.Dockerfile --tag $imageName:latest';
+      print('Building https://github.com/$imageName.git');
+      print(
+          'Docker raw command for local repo. : docker build $dockerBuildArgs .');
+      dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
+      print('Docker raw command : docker build $dockerBuildArgs');
+      docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+      if (!builtImages.contains(imageName)) {
+        builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+        builtImages.add(imageName);
+      }
     }
   }
   //pushed images
   if (afterCleanUp) {
     pushedImages = pushedImagesFile.readAsLinesSync();
   }
-  print('Pushed Images : $pushedImages');
+  // print('Pushed Images : $pushedImages');
   if (pushedImages.contains(imageName)) {
     print('Image $imageName is already pushed. So, skipping now...');
   } else {
@@ -182,6 +228,7 @@ void pushImage(String imageName) {
   print('Docker raw command : docker push $dockerPushArgs');
   if (!pushedImages.contains(imageName)) {
     pushedImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
+    pushedImages.add(imageName);
   }
   print('Pushed Images : $pushedImages');
 }
