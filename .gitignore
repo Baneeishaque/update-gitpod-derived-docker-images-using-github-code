@@ -8,3 +8,6 @@ build/
 builtImages.txt
 pushedImages.txt
 dfResult.txt
+
+/.idea/libraries/Dart_SDK.xml
+/.idea/libraries/Dart_Packages.xml
