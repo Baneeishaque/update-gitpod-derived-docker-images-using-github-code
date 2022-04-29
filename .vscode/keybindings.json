@@ -1,0 +1,14 @@
+[
+    {
+        "key": "ctrl+b+u",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build Gitpod Docker Image",
+        "when": "editorLangId == Dockerfile"
+    },
+    {
+        "key": "ctrl+r+u",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run Gitpod Docker Image",
+        "when": "editorLangId == Dockerfile"
+    }
+]
