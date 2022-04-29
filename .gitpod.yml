@@ -1,0 +1,82 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  # - init: /usr/bin/start-vnc-session.sh
+  # - command: zsh
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio.git" android-studio-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-config ~/.config/Google/AndroidStudio4.1 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-config/AndroidStudio4.1-local ~/.local/share/Google/AndroidStudio4.1 && cd /usr/local/android-studio/bin/ && ./studio.sh
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea.git" intellij-idea-config && rm -rf ~/.config/JetBrains/IntelliJIdea2021.1 && mkdir -p ~/.config/JetBrains && ln -s `pwd`/intellij-idea-config/IntelliJIdea2021.1-config ~/.config/JetBrains/IntelliJIdea2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/intellij-idea-config/IntelliJIdea2021.1-local ~/.local/share/JetBrains/IntelliJIdea2021.1 && cd /usr/local/idea-IU-211.6693.111/bin/ && ./idea.sh
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-intellij-idea-pycharm.git" pycharm-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-config ~/.config/JetBrains/PyCharm2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/pycharm-config/Pycharm2021.1-local ~/.local/share/JetBrains/PyCharm2021.1 && cd /usr/local/pycharm-2021.1/bin/ && ./pycharm.sh
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gitpod-full-1366x768-tint2-pcmanfm-zsh-as-gh-chrome-idea-pycharm-anaconda3-2020-11-as-canary.git" android-studio-canary-config && mkdir -p ~/.config/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-config ~/.config/Google/AndroidStudioPreview2020.3 && mkdir -p ~/.local/share/Google && ln -s `pwd`/android-studio-canary-config/AndroidStudioPreview2020.3-local ~/.local/share/Google/AndroidStudioPreview2020.3 && cd /usr/local/android-studio-canary/bin/ && ./studio.sh
+  # - command: gh auth login
+  # - command: git clone --depth 1 "https://gitlab.com/baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-studio-gh-chrome-private.git" chrome-config && export CHROME_CONFIG_HOME=`pwd`/chrome-config && google-chrome --disable-dev-shm-usage
+  # - command: ghb
+  # - command: anaconda-navigator
+  # - command: R
+  # - command: cd .. && jupyter-lab --ContentsManager.allow_hidden=True
+  # - command: git clone --depth 1 https://github.com/Baneeishaque/configuartions-private.git config && cd /usr/local/FileZilla3/bin/ && ./filezilla
+  # - command: cd /usr/local/Telegram/ && ./Telegram
+  # MATLAB is not available
+  # - command: cd /usr/local/MATLAB/R2021a/bin && ./matlab
+  # - command: mysql -uroot
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gp-vnc-pcman-zsh-as-gh-chrome-idea-pycharm-conda3-hb-scrcpy-r-lfs-zilla-gram-matlab-mysql-phpstorm.git" phpstorm-config && mkdir -p ~/.config/JetBrains && ln -s `pwd`/phpstorm-config/PhpStorm2021.1-config ~/.config/JetBrains/PhpStorm2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/phpstorm-config/PhpStorm2021.1-local ~/.local/share/JetBrains/PhpStorm2021.1 && cd /usr/local/PhpStorm-211.7142.44/bin/ && ./phpstorm.sh
+  # Use on a project folder, not work (Gitpod's code will open)
+  # - command: code .
+  # Will Work (Insiders is the beta version of Microsoft VSCode)
+  # - command: code-insiders .
+  # - command: git clone --depth 1 "https://github.com/Baneeishaque/gp-vnc-zsh-as-gh-chrome-idea-charm-conda3-scrcpy-r-zilla-gram-matlab-mysql-phpwebstorm-1366x625-code" webstorm-config && rm -rf ~/.config/JetBrains/WebStorm2021.1 && mkdir -p ~/.config/JetBrains && ln -s `pwd`/webstorm-config/WebStorm2021.1-config ~/.config/JetBrains/WebStorm2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/webstorm-config/WebStorm2021.1-local ~/.local/share/JetBrains/WebStorm2021.1 && cd /usr/local/WebStorm-211.7442.26/bin/ && ./webstorm.sh
+  # - command: rm -rf ~/.config/JetBrains/RubyMine2021.1 && mkdir -p ~/.config/JetBrains && ln -s `pwd`/RubyMine2021.1-config ~/.config/JetBrains/RubyMine2021.1 && mkdir -p ~/.local/share/JetBrains && ln -s `pwd`/RubyMine2021.1-local ~/.local/share/JetBrains/RubyMine2021.1 && cd /usr/local/RubyMine-2021.1.2/bin/ && ./rubymine.sh
+  # - command: anydesk
+  # - command: tilda
+  # - command: jadx-gui
+  # - command: java -Dsun.java2d.xrender=false -jar /home/gitpod/jd-gui-1.6.6.jar
+  - init: cd /workspace && git clone --depth 1 https://github.com/Baneeishaque/configurations-private.git && ln configurations-private/rclone.conf rclone.conf && mkdir ~/.config/rclone/ && mv rclone.conf ~/.config/rclone/
+
+ports:
+  - port: 5900
+    onOpen: ignore
+  - port: 6080
+    onOpen: open-preview
+  - port: 6942
+    onOpen: ignore    
+  - port: 6943
+    onOpen: ignore   
+  - port: 6944
+    onOpen: ignore   
+  - port: 6945
+    onOpen: ignore
+  - port: 5037
+    onOpen: ignore
+  - port: 8599
+    onOpen: ignore
+  - port: 3306
+    onOpen: ignore
+
+github:
+  prebuilds:
+    # enable for all branches in this repo (defaults to false)
+    branches: true
+    # enable for pull requests coming from forks (defaults to false)
+    pullRequestsFromForks: true
+    # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
+    addComment: true
+    # add a "Review in Gitpod" button to the pull request's description (defaults to false)
+    addBadge: true
+    # add a label once the prebuild is ready to pull requests (defaults to false)
+    addLabel: true
+
+vscode:
+  extensions:
+    - ms-python.python@2020.10.332292344
+    - codezombiech.gitignore@0.6.0
+    - maddog986.autodocblocker@1.0.2
+    - guillaumeisabelle.gixdeko-comments@1.0.115
+    - owenfarrell.vscode-microtask@1.0.3
+    - naturalclar.workspace-settings-json@0.0.10
+    - mathiasfrohlich.kotlin@1.7.1
+    - vikas.code-navigation@0.2.0
+    - haugerbr.project-tasks@1.0.0
+    - mhutchie.git-graph@1.28.0
+    - reduckted.vscode-gitweblinks@2.3.0
+    - caponetto.vscode-diff-viewer@1.1.1
+    - adelphes.android-dev-ext@1.3.2
