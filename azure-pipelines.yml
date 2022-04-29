@@ -1,0 +1,24 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+stages:
+- stage: Build_Image
+  displayName: Build Image
+  jobs:
+  - job: Build_Image
+    displayName: Build Image
+    pool:
+      vmImage: ubuntu-latest
+    steps:   
+    - task: Docker@2
+      displayName: Build Image
+      inputs:
+        command: 'build'
+        Dockerfile: '.gitpod.Dockerfile'
