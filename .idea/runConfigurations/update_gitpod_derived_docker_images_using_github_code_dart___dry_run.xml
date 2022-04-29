@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="update_gitpod_derived_docker_images_using_github_code.dart --dry-run" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+    <option name="arguments" value="baneeishaque/gitpod-workspace-full-vnc-1366x768-tint2-pcmanfm-zsh-android-sdk --dry-run" />
+    <option name="filePath" value="$PROJECT_DIR$/bin/update_gitpod_derived_docker_images_using_github_code.dart" />
+    <method v="2" />
+  </configuration>
+</component>

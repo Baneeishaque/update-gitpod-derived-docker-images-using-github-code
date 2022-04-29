@@ -36,7 +36,8 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
 }
 
 Future<void> searchForGitpodDerivedImagesSkeleton(
-    String imageName, String gitHubUsername) async {
+    String imageName, String gitHubUsername,
+    {bool isDryRun = false}) async {
   if (imageName.isEmpty) {
     print('Invalid Image Name...');
     return;
@@ -48,7 +49,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
   }
 
   print('$apiRequestCount : $imageName - Build, Push & Safely Remove Image');
-  await repositoryCloneBuildPushAndRemoveImage(imageName);
+  await repositoryCloneBuildPushAndRemoveImage(imageName, isDryRun: isDryRun);
 
   GitHubApiSearchCodeRequestResponse gitHubApiSearchCodeRequestResponse =
       await searchForGitHubCode(
@@ -65,10 +66,9 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
       Repository repository = item.repository;
       String derivedImage =
           '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
-      if ((derivedImage.contains('gitpod')) ||
-          (derivedImage.contains('gp'))) {
+      if ((derivedImage.contains('gitpod')) || (derivedImage.contains('gp'))) {
         print(derivedImage);
-      } 
+      }
     }
     for (var i = 0; i < gitHubApiSearchCodeRequestResponse.totalCount; ++i) {
       Items item = gitHubApiSearchCodeRequestResponse.items[i];
@@ -81,9 +81,11 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
             '$gitHubUsername/${repository.htmlUrl.replaceFirst('https://github.com/${intl.toBeginningOfSentenceCase(gitHubUsername)}/', '')}';
         if ((derivedImage.contains('gitpod')) ||
             (derivedImage.contains('gp'))) {
-          print('Processing Derived Image : $derivedImage of Image : $imageName');
+          print(
+              'Processing Derived Image : $derivedImage of Image : $imageName');
           await searchForGitpodDerivedImagesSkeleton(
-              derivedImage, gitHubUsername);
+              derivedImage, gitHubUsername,
+              isDryRun: isDryRun);
         }
       }
     }
@@ -124,98 +126,104 @@ void removePushedImages() {
   pushedImages = List.empty(growable: true);
 }
 
-bool deleteAllImages(){
+bool deleteAllImages() {
   print('Removing all images...');
-  List<String> imagesIdList =
-      docker2.dockerRun('images', '-a -q');
+  List<String> imagesIdList = docker2.dockerRun('images', '-a -q');
   print('All Images : $imagesIdList');
   if (imagesIdList.isNotEmpty) {
-    imagesIdList.forEach((imageId){
+    imagesIdList.forEach((imageId) {
       removeImageUsingImageId(imageId);
     });
     return true;
-  }else{
+  } else {
     return false;
   }
 }
 
 Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
-    {bool afterCleanUp = false}) async {
-  //built images
-  if (builtImages.contains(imageName)) {
-    print('Image $imageName is already built. So, skipping now...');
+    {bool afterCleanUp = false, bool isDryRun = false}) async {
+  if (isDryRun) {
+    print('Dry Run : Skipping Clone, Build, Push & Remove Image');
   } else {
-    //check disk space
-    ProcessResult dfResult = await Process.run('df', ['-h', '--total']);
-    String dfResultFileName = 'dfResult.txt';
-    File(dfResultFileName).writeAsStringSync(dfResult.stdout.toString());
-    ProcessResult grepResult =
-        await Process.run('grep', ['total', dfResultFileName]);
-    String processedGrepResultString =
-        grepResult.stdout.toString().substring(16);
-    int percentageSymbolIndex = processedGrepResultString.indexOf('%');
-    int diskUsagePercentage = int.parse(processedGrepResultString.substring(
-        percentageSymbolIndex - 2, percentageSymbolIndex));
-    int allowedMaximumDiskUsage =
-        int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE']);
-    print(
-        'disk Usage % : $diskUsagePercentage, allowed Disk Usage % : $allowedMaximumDiskUsage');
-    if (diskUsagePercentage >= allowedMaximumDiskUsage) {
-      //Stop Containers
-      // List<String> containerIds = docker2.dockerRun('ps', '-a -q');
-      // print(containerIds);
-      // containerIds.forEach((containerId) {
-      //   docker2.dockerRun('rm', containerId, terminal: true);
-      // });
-      if (pushedImages.isNotEmpty) {
-        removePushedImages();
-        repositoryCloneBuildPushAndRemoveImage(imageName, afterCleanUp: true);
+    //built images
+    if (builtImages.contains(imageName)) {
+      print('Image $imageName is already built. So, skipping now...');
+    } else {
+      //check disk space
+      ProcessResult dfResult = await Process.run('df', ['-h', '--total']);
+      String dfResultFileName = 'dfResult.txt';
+      File(dfResultFileName).writeAsStringSync(dfResult.stdout.toString());
+      ProcessResult grepResult =
+          await Process.run('grep', ['total', dfResultFileName]);
+      String processedGrepResultString =
+          grepResult.stdout.toString().substring(16);
+      int percentageSymbolIndex = processedGrepResultString.indexOf('%');
+      int diskUsagePercentage = int.parse(processedGrepResultString.substring(
+          percentageSymbolIndex - 2, percentageSymbolIndex));
+      int allowedMaximumDiskUsage =
+          int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE']);
+      print(
+          'disk Usage % : $diskUsagePercentage, allowed Disk Usage % : $allowedMaximumDiskUsage');
+      if (diskUsagePercentage >= allowedMaximumDiskUsage) {
+        //Stop Containers
+        // List<String> containerIds = docker2.dockerRun('ps', '-a -q');
+        // print(containerIds);
+        // containerIds.forEach((containerId) {
+        //   docker2.dockerRun('rm', containerId, terminal: true);
+        // });
+        if (pushedImages.isNotEmpty) {
+          removePushedImages();
+          repositoryCloneBuildPushAndRemoveImage(imageName,
+              afterCleanUp: true, isDryRun: isDryRun);
+        } else {
+          //delete all images
+          if (deleteAllImages()) {
+            repositoryCloneBuildPushAndRemoveImage(imageName,
+                afterCleanUp: true, isDryRun: isDryRun);
+          } else {
+            print('Error : out of storage...');
+            exit(0);
+          }
+        }
       } else {
-        //delete all images
-        if(deleteAllImages()){
-          repositoryCloneBuildPushAndRemoveImage(imageName, afterCleanUp: true);
-        }else{
-          print('Error : out of storage...');
-          exit(0);
+        String dockerBuildArgs =
+            '--file .gitpod.Dockerfile --tag $imageName:latest';
+        print('Building https://github.com/$imageName.git');
+        print(
+            'Docker raw command for local repo. : docker build $dockerBuildArgs .');
+        dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
+        print('Docker raw command : docker build $dockerBuildArgs');
+        docker2.dockerRun('build', dockerBuildArgs, terminal: true);
+        if (!builtImages.contains(imageName)) {
+          builtImagesFile.writeAsStringSync('$imageName\n',
+              mode: FileMode.append);
+          builtImages.add(imageName);
         }
       }
-    }else{
-      String dockerBuildArgs =
-          '--file .gitpod.Dockerfile --tag $imageName:latest';
-      print('Building https://github.com/$imageName.git');
-      print(
-          'Docker raw command for local repo. : docker build $dockerBuildArgs .');
-      dockerBuildArgs = '$dockerBuildArgs https://github.com/$imageName.git';
-      print('Docker raw command : docker build $dockerBuildArgs');
-      docker2.dockerRun('build', dockerBuildArgs, terminal: true);
-      if (!builtImages.contains(imageName)) {
-        builtImagesFile.writeAsStringSync('$imageName\n', mode: FileMode.append);
-        builtImages.add(imageName);
-      }
     }
-  }
-  //pushed images
-  if (afterCleanUp) {
-    pushedImages = pushedImagesFile.readAsLinesSync();
-  }
-  // print('Pushed Images : $pushedImages');
-  if (pushedImages.contains(imageName)) {
-    print('Image $imageName is already pushed. So, skipping now...');
-  } else {
-    if (isLoggedIn) {
-      pushImage(imageName);
+    //pushed images
+    if (afterCleanUp) {
+      pushedImages = pushedImagesFile.readAsLinesSync();
+    }
+    // print('Pushed Images : $pushedImages');
+    if (pushedImages.contains(imageName)) {
+      print('Image $imageName is already pushed. So, skipping now...');
     } else {
-      var loginResult = docker2.dockerRun('login',
-          '--username ${Platform.environment['DOCKER_HUB_USERNAME']} --password ${Platform.environment['DOCKER_HUB_PASSWORD']}');
-      // print(loginResult);
-      // print(loginResult.last);
-      if (loginResult.last == 'Login Succeeded') {
-        isLoggedIn = true;
-        // exit(0);
+      if (isLoggedIn) {
         pushImage(imageName);
       } else {
-        print('login Error : $loginResult');
-        exit(0);
+        var loginResult = docker2.dockerRun('login',
+            '--username ${Platform.environment['DOCKER_HUB_USERNAME']} --password ${Platform.environment['DOCKER_HUB_PASSWORD']}');
+        // print(loginResult);
+        // print(loginResult.last);
+        if (loginResult.last == 'Login Succeeded') {
+          isLoggedIn = true;
+          // exit(0);
+          pushImage(imageName);
+        } else {
+          print('login Error : $loginResult');
+          exit(0);
+        }
       }
     }
   }
@@ -233,12 +241,14 @@ void pushImage(String imageName) {
   print('Pushed Images : $pushedImages');
 }
 
-Future<void> searchForGitpodDerivedImages(String baseImageName) async {
+Future<void> searchForGitpodDerivedImages(String baseImageName,
+    {bool isDryRun = false}) async {
   if (builtImagesFile.existsSync()) {
     builtImages = builtImagesFile.readAsLinesSync();
   }
   if (pushedImagesFile.existsSync()) {
     pushedImages = pushedImagesFile.readAsLinesSync();
   }
-  await searchForGitpodDerivedImagesSkeleton(baseImageName, 'baneeishaque');
+  await searchForGitpodDerivedImagesSkeleton(baseImageName, 'baneeishaque',
+      isDryRun: isDryRun);
 }
