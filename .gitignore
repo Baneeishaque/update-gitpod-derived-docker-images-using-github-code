@@ -11,3 +11,8 @@ dfResult.txt
 
 /.idea/libraries/Dart_SDK.xml
 /.idea/libraries/Dart_Packages.xml
+
+/.idea/modules.xml
+/.idea/update-gitpod-derived-docker-images-using-github-code.iml
+
+/.idea/misc.xml
