@@ -24,7 +24,9 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
   String encodeSearchQuery = Uri.encodeFull(searchQuery);
   Uri url =
       Uri.parse('https://api.github.com/search/code?q=$encodeSearchQuery');
-  http.Response response = await http.get(url);
+  http.Response response = await http.get(url, headers: {
+    'Authentication': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+  });
 
   if (response.statusCode == 200) {
     return GitHubApiSearchCodeRequestResponse.fromJson(
