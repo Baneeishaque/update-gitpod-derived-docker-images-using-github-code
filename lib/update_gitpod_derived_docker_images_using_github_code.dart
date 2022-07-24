@@ -24,17 +24,46 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
   String encodeSearchQuery = Uri.encodeFull(searchQuery);
   Uri url =
       Uri.parse('https://api.github.com/search/code?q=$encodeSearchQuery');
+  // http.Response response = await http.get(url);
   http.Response response = await http.get(url, headers: {
-    'Authentication': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+    'Authorization': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
   });
 
   if (response.statusCode == 200) {
     return GitHubApiSearchCodeRequestResponse.fromJson(
         jsonDecode(response.body));
   } else {
+    print('Headers');
+    print('---------------------------');
+    var headersInJson = json.encode(response.headers);
+    prettyPrintJson2(headersInJson);
+
+    // throw Exception(
+    //     'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}, Headers - ${prettyPrintJson(headersInJson)}');
+
     throw Exception(
         'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
   }
+}
+
+void prettyPrintJson2(String input) {
+  const JsonDecoder decoder = JsonDecoder();
+  const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+  final dynamic object = decoder.convert(input);
+  final dynamic prettyString = encoder.convert(object);
+  prettyString.split('\n').forEach((dynamic element) => print(element));
+}
+
+String prettyPrintJson(String input) {
+  const JsonDecoder decoder = JsonDecoder();
+  const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+  final dynamic object = decoder.convert(input);
+  final dynamic prettyString = encoder.convert(object);
+  var result = "";
+  prettyString
+      .split('\n')
+      .forEach((dynamic element) => {result = result + element});
+  return result;
 }
 
 Future<void> searchForGitpodDerivedImagesSkeleton(
@@ -45,7 +74,7 @@ Future<void> searchForGitpodDerivedImagesSkeleton(
     return;
   }
 
-  if ((apiRequestCount > 10) && ((apiRequestCount % 10) == 1)) {
+  if ((apiRequestCount > 30) && ((apiRequestCount % 30) == 1)) {
     print('Waiting to bypass GitHub API request limit restrictions');
     sleep(Duration(minutes: 1));
   }
