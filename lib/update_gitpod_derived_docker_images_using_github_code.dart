@@ -30,6 +30,7 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
   });
 
   if (response.statusCode == 200) {
+    sleep(Duration(seconds: 5));
     return GitHubApiSearchCodeRequestResponse.fromJson(
         jsonDecode(response.body));
   } else {
@@ -41,8 +42,11 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
     // throw Exception(
     //     'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}, Headers - ${prettyPrintJson(headersInJson)}');
 
-    throw Exception(
-        'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
+    // throw Exception(
+    //     'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
+    print('Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
+    sleep(Duration(minutes: 1));
+    return await searchForGitHubCode(searchQuery);
   }
 }
 
