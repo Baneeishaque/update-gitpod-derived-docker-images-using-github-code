@@ -17,7 +17,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:   
-    - task: Docker@2
+    - task: Docker@2.212.1
       displayName: Build Image
       inputs:
         command: 'build'
