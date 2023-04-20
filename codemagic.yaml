@@ -6,6 +6,7 @@ workflows:
     environment:
       groups:
         - docker-hub-credentials
+        - github-credentials
     triggering:
       events:
         - push
