@@ -1,6 +1,9 @@
 import 'package:update_gitpod_derived_docker_images_using_github_code/update_gitpod_derived_docker_images_using_github_code.dart'
     as update_gitpod_derived_docker_images_using_github_code;
+
 import 'dart:io';
+
+import 'package:dotenv/dotenv.dart' show load;
 
 Future<void> main(List<String> arguments) async {
   // print(arguments.length);
@@ -9,6 +12,7 @@ Future<void> main(List<String> arguments) async {
     print(
         'Error: Missing Base Image Name - Please supply the Base Image Name as program argument...');
   } else {
+    load();
     if (arguments.contains('--dry-run')) {
       await update_gitpod_derived_docker_images_using_github_code
           .searchForGitpodDerivedImages(arguments[0], isDryRun: true);

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:docker2/docker2.dart' as docker2;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
+import 'package:dotenv/dotenv.dart' show env;
 
 import 'package:update_gitpod_derived_docker_images_using_github_code/GithubApiSearchCodeRequestResponse.dart';
 
@@ -26,7 +27,7 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
       Uri.parse('https://api.github.com/search/code?q=$encodeSearchQuery');
   // http.Response response = await http.get(url);
   http.Response response = await http.get(url, headers: {
-    'Authorization': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+    'Authorization': 'token ${env['GITHUB_PERSONAL_ACCESS_TOKEN']}'
   });
 
   if (response.statusCode == 200) {
@@ -44,7 +45,8 @@ Future<GitHubApiSearchCodeRequestResponse> searchForGitHubCode(
 
     // throw Exception(
     //     'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
-    print('Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
+    print(
+        'Error : Status Code - ${response.statusCode}, Response Body - ${response.body}');
     sleep(Duration(minutes: 1));
     return await searchForGitHubCode(searchQuery);
   }
