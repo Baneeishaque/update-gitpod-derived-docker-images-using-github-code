@@ -198,7 +198,7 @@ Future<void> repositoryCloneBuildPushAndRemoveImage(String imageName,
       int diskUsagePercentage = int.parse(processedGrepResultString.substring(
           percentageSymbolIndex - 2, percentageSymbolIndex));
       int allowedMaximumDiskUsage =
-          int.parse(Platform.environment['MAXIMUM_DISK_USAGE_PERCENTAGE']);
+          int.parse(env['MAXIMUM_DISK_USAGE_PERCENTAGE']);
       print(
           'disk Usage % : $diskUsagePercentage, allowed Disk Usage % : $allowedMaximumDiskUsage');
       if (diskUsagePercentage >= allowedMaximumDiskUsage) {
