@@ -25,7 +25,8 @@ workflows:
       - name: Install Dart on macOS
         script: |
           brew tap dart-lang/dart
-          brew install dart
+          brew install dart@2.14
+          brew link dart@2.14
       - name: update-gitpod-derived-docker-images-using-github-code Sample
         script: |
           dart pub get
