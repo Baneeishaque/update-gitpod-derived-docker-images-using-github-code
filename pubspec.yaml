@@ -10,4 +10,4 @@ dev_dependencies:
   # lints: ^2.0.0
   test: ^1.21.4
 
-dependencies: { docker2: ^2.2.8, dotenv: ^3.0.0, http: ^0.13.4, intl: 0.18.1 }
+dependencies: { docker2: ^2.2.8, dotenv: ^3.0.0, http: ^0.13.4, intl: 0.19.0 }
