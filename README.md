@@ -84,8 +84,11 @@ gh repo edit Baneeishaque/update-gitpod-derived-docker-images-using-github-code 
 gh repo edit Baneeishaque/update-gitpod-derived-docker-images-using-github-code --add-topic command-line-tool
 gh repo edit Baneeishaque/update-gitpod-derived-docker-images-using-github-code --add-topic devops
 
-# Or add all topics at once (comma-separated, no spaces)
-gh repo edit Baneeishaque/update-gitpod-derived-docker-images-using-github-code --add-topic dart,docker,gitpod,github-api,dockerfile,azure-pipelines,codemagic,ci-cd,automation,docker-hub,command-line-tool,devops
+# Or add all topics at once (comma-separated)
+gh repo edit Baneeishaque/update-gitpod-derived-docker-images-using-github-code \
+  --add-topic dart,docker,gitpod,github-api,dockerfile \
+  --add-topic azure-pipelines,codemagic,ci-cd,automation \
+  --add-topic docker-hub,command-line-tool,devops
 ```
 
 #### Method 2: GitHub Web Interface
@@ -103,7 +106,22 @@ curl -X PUT \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer YOUR_GITHUB_TOKEN" \
   https://api.github.com/repos/Baneeishaque/update-gitpod-derived-docker-images-using-github-code/topics \
-  -d '{"names":["dart","docker","gitpod","github-api","dockerfile","azure-pipelines","codemagic","ci-cd","automation","docker-hub","command-line-tool","devops"]}'
+  -d '{
+    "names": [
+      "dart",
+      "docker",
+      "gitpod",
+      "github-api",
+      "dockerfile",
+      "azure-pipelines",
+      "codemagic",
+      "ci-cd",
+      "automation",
+      "docker-hub",
+      "command-line-tool",
+      "devops"
+    ]
+  }'
 ```
 
 #### Method 4: GraphQL API
@@ -112,7 +130,20 @@ curl -X PUT \
 mutation {
   updateRepository(input: {
     repositoryId: "REPOSITORY_NODE_ID",
-    topics: ["dart", "docker", "gitpod", "github-api", "dockerfile", "azure-pipelines", "codemagic", "ci-cd", "automation", "docker-hub", "command-line-tool", "devops"]
+    topics: [
+      "dart",
+      "docker",
+      "gitpod",
+      "github-api",
+      "dockerfile",
+      "azure-pipelines",
+      "codemagic",
+      "ci-cd",
+      "automation",
+      "docker-hub",
+      "command-line-tool",
+      "devops"
+    ]
   }) {
     repository {
       repositoryTopics(first: 20) {
