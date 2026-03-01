@@ -1,0 +1,474 @@
+# Instincts generated from https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+# Generated: 2026-03-01T09:16:13.764Z
+# Version: 2.0
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Commit Length
+
+## Action
+
+Keep commit messages concise (under 50 characters)
+
+## Evidence
+
+- Average commit message length: 15 chars
+- Based on 53 commits
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Export Style
+
+## Action
+
+Prefer mixed exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: mixed
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-workflow-dependency-update
+trigger: "when doing dependency update"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Workflow Dependency Update
+
+## Action
+
+Follow the dependency-update workflow:
+1. Update pubspec.yaml with new dependency versions
+2. Regenerate pubspec.lock
+3. Update tool versions if needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: pubspec.yaml, pubspec.lock, .tool-versions
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-workflow-codemagic-configuration-fix
+trigger: "when doing codemagic configuration fix"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Workflow Codemagic Configuration Fix
+
+## Action
+
+Follow the codemagic-configuration-fix workflow:
+1. Modify codemagic.yaml configuration
+2. Test pipeline
+3. Apply additional fixes if needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~8x per month
+- Files: codemagic.yaml
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-workflow-main-library-debugging
+trigger: "when doing main library debugging"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Workflow Main Library Debugging
+
+## Action
+
+Follow the main-library-debugging workflow:
+1. Identify issue in main library
+2. Apply code fix
+3. Add debug information if needed
+4. Test changes
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~15x per month
+- Files: lib/update_gitpod_derived_docker_images_using_github_code.dart
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-workflow-ide-integration-setup
+trigger: "when doing ide integration setup"
+confidence: 0.55
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Workflow Ide Integration Setup
+
+## Action
+
+Follow the ide-integration-setup workflow:
+1. Create IDE-specific configuration files
+2. Set up run configurations
+3. Configure project settings
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~1x per month
+- Files: .idea/*, .vscode/*, .gitpod.*
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-workflow-gitignore-cleanup
+trigger: "when doing gitignore cleanup"
+confidence: 0.65
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Workflow Gitignore Cleanup
+
+## Action
+
+Follow the gitignore-cleanup workflow:
+1. Identify files to ignore
+2. Update .gitignore
+3. Clean existing tracked files if needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~3x per month
+- Files: .gitignore
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-snake-case-files
+trigger: "When creating new files"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Snake Case Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- githubApiRequestRateLimitChecker.bash
+- docker_cleanup.bash
+- update_gitpod_derived_docker_images_using_github_code.dart
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-camel-case-functions
+trigger: "When naming functions or methods"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Camel Case Functions
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- TypeScript language patterns
+- Standard camelCase in lib files
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-pascal-case-classes
+trigger: "When defining classes"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Pascal Case Classes
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- TypeScript language patterns
+- Standard PascalCase in codebase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-screaming-snake-constants
+trigger: "When defining constants"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Screaming Snake Constants
+
+## Action
+
+Use SCREAMING_SNAKE_CASE naming convention
+
+## Evidence
+
+- TypeScript language patterns
+- Standard constant naming in codebase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-separate-tests
+trigger: "When writing tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Separate Tests
+
+## Action
+
+Place tests in separate test location outside src
+
+## Evidence
+
+- Architecture shows separate test location
+- Single-package structure with separate testing
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-freeform-commits
+trigger: "When making commits"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Freeform Commits
+
+## Action
+
+Use freeform commit messages averaging 15 words without strict prefixes
+
+## Evidence
+
+- Update dependency dart to v3
+- Code Magic Fix
+- env. variable fix
+- dependency updates
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-descriptive-commits
+trigger: "When committing changes"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Descriptive Commits
+
+## Action
+
+Use descriptive messages that clearly state what was updated or fixed
+
+## Evidence
+
+- Update codemagic.yaml
+- Github Authenticated Requests
+- githubApiRequestRateLimitChecker.bash
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-dependency-update-workflow
+trigger: "When dependencies need to be updated or upgraded"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Dependency Update Workflow
+
+## Action
+
+Update pubspec.yaml, regenerate pubspec.lock, and update tool versions
+
+## Evidence
+
+- dependency updates commits
+- pubspec.yaml and pubspec.lock file involvement
+- 2 instances of dependency update workflow
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-codemagic-fix-workflow
+trigger: "When CI/CD pipeline fails or needs configuration changes"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Codemagic Fix Workflow
+
+## Action
+
+Modify codemagic.yaml configuration iteratively until pipeline works
+
+## Evidence
+
+- Update codemagic.yaml commits
+- 8 instances of codemagic configuration fixes
+- High frequency during setup
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-main-library-debug-workflow
+trigger: "When bugs are found in main application logic"
+confidence: 0.88
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Main Library Debug Workflow
+
+## Action
+
+Apply fixes to lib/update_gitpod_derived_docker_images_using_github_code.dart with debug information
+
+## Evidence
+
+- 15 instances of main library debugging
+- Code Magic Fix commits
+- Main library file involvement
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-ide-setup-workflow
+trigger: "When setting up development environment or adding IDE support"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Ide Setup Workflow
+
+## Action
+
+Create configuration files for .idea, .vscode, and .gitpod directories
+
+## Evidence
+
+- .idea, .vscode folders in common folders
+- IDE integration setup workflow
+- 1 instance per project
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-gitignore-cleanup-workflow
+trigger: "When repository needs cleanup or new files need to be ignored"
+confidence: 0.75
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Gitignore Cleanup Workflow
+
+## Action
+
+Update .gitignore and clean existing tracked files if needed
+
+## Evidence
+
+- 3 instances of gitignore cleanup workflow
+- .gitignore file involvement
+- Repository cleanup patterns
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-hybrid-modules
+trigger: "When organizing code modules"
+confidence: 0.7
+domain: architecture
+source: repo-analysis
+source_repo: Baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Hybrid Modules
+
+## Action
+
+Use hybrid module organization approach
+
+## Evidence
+
+- moduleOrganization: hybrid
+- Single-package structure with lib and bin folders
+
