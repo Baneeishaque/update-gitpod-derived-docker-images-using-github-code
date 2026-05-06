@@ -1,0 +1,6 @@
+interface:
+  display_name: "Update Gitpod Derived Docker Images Using Github Code"
+  short_description: "Repo-specific patterns and workflows for update-gitpod-derived-docker-images-using-github-code"
+  default_prompt: "Use the update-gitpod-derived-docker-images-using-github-code repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
