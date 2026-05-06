@@ -1,0 +1,261 @@
+# Instincts generated from https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+# Generated: 2026-05-06T23:57:08.857Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Commit Length
+
+## Action
+
+Keep commit messages concise (~28 characters)
+
+## Evidence
+
+- Average commit message length: 28 chars
+- Based on 1 commits
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-file-naming
+trigger: "When creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct File Naming
+
+## Action
+
+Name the file using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.files: camelCase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.functions: camelCase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.classes: PascalCase
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle: relative
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source files
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: separate
+
+---
+id: update-gitpod-derived-docker-images-using-github-code-instinct-commit-format
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: baneeishaque/update-gitpod-derived-docker-images-using-github-code
+---
+
+# Update Gitpod Derived Docker Images Using Github Code Instinct Commit Format
+
+## Action
+
+Write a short, freeform message describing the change (average length ~28 characters, no enforced prefix)
+
+## Evidence
+
+- Pattern in commits.type: freeform
+- commits.averageLength: 28
+- commits.prefixes: []
+- Example: 'Update dependency dart to v3'
+
